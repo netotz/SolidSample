@@ -20,7 +20,7 @@ public class PolicySerializer
             PolicyType.Auto => JsonConvert.DeserializeObject<AutoPolicy>(json, new StringEnumConverter()),
             PolicyType.Land => JsonConvert.DeserializeObject<LandPolicy>(json, new StringEnumConverter()),
             PolicyType.Life => JsonConvert.DeserializeObject<LifePolicy>(json, new StringEnumConverter()),
-            _ => throw new Exception()
+            _ => throw new ArgumentException("Unkown policy type.")
         };
     }
 }

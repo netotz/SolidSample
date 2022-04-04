@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ArdalisRating.Policies;
+using ArdalisRating.PolicyRaters;
+
+using System;
 
 namespace ArdalisRating;
 
@@ -8,7 +11,7 @@ namespace ArdalisRating;
 /// </summary>
 public class RatingEngine
 {
-    public decimal Rating { get; set; }
+    public decimal Rating { get; set; } = 0;
     private Logger Logger { get; } = new Logger();
     private PolicyLoader PolicyLoader { get; } = new PolicyLoader();
     private PolicySerializer PolicySerializer { get; } = new PolicySerializer();
@@ -24,7 +27,13 @@ public class RatingEngine
 
         var policy = PolicySerializer.DeserializeJson(policyJson);
 
-        
+        Rating = policy switch
+        {
+            AutoPolicy => new AutoPolicyRater(Logger, policy as AutoPolicy).Rate(),
+            LandPolicy => new LandPolicyRater(Logger, policy as LandPolicy).Rate(),
+            LifePolicy => new LifePolicyRater(Logger, policy as LifePolicy).Rate(),
+            _ => throw new ArgumentException()
+        };
 
         Logger.Log("Rating completed.");
     }
