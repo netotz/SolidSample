@@ -15,7 +15,7 @@ public abstract class Policy
 {
     public static Dictionary<string, Type> GetTypes()
     {
-        var assemblyName = typeof(Policy).Assembly.GetName().Name;
+        var assemblyName = typeof(Policy).Namespace;
 
         return Enum.GetNames<PolicyType>()
             .Select(n => new
