@@ -14,8 +14,8 @@ public class PolicySerializer
         var typeName = JObject.Parse(json)["type"]?.ToString();
         var types = Policy.GetTypes();
 
-        return !types.TryGetValue(typeName, out var policyType)
-            ? throw new ArgumentException("Unkown policy type.")
-            : JsonConvert.DeserializeObject(json, policyType) as Policy;
+        return types.TryGetValue(typeName, out var policyType)
+            ? JsonConvert.DeserializeObject(json, policyType) as Policy
+            : throw new ArgumentException("Unkown policy type.");
     }
 }
